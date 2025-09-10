@@ -1,0 +1,20 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER:-user}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS:-password}
+    volumes:
+      - ./mongo-data:/data/db
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8082:8081
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://${DB_USER:-user}:${DB_PASS:-password}@mongodb:27017/
+      ME_CONFIG_BASICAUTH: false
